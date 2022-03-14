@@ -1,13 +1,47 @@
-<form #registerForm (ngSubmit)="register()" autocomplete="off" class="container col-12 py-2">
+<form [formGroup]='registerForm' (ngSubmit)="register()" autocomplete="off" class="container col-12 py-2">
 
   <h2 class="text-center text-primary">Sign up</h2>
   <hr>
   <div class="form-group">
-    <input type="text" name="username" class="form-control" [(ngModel)]="model.username" placeholder="Username">
+    <input
+    [class.is-invalid]='registerForm.get("username").errors
+      && registerForm.get("username").touched'
+    type="text"
+    name="username"
+    class="form-control"
+    formControlName="username"
+    placeholder="Username">
+    <div class="invalid-feedback">Please enter a username</div>
   </div>
 
   <div class="form-group">
-    <input type="password" name="password" class="form-control" [(ngModel)]="model.password" placeholder="Password">
+    <input
+    [class.is-invalid]='registerForm.get("password").errors
+      && registerForm.get("password").touched'
+    type="password"
+    class="form-control"
+    formControlName="password"
+    placeholder="Password">
+    <div *ngIf="registerForm.get('password').hasError('required')"
+      class="invalid-feedback">Please enter a password</div>
+    <div *ngIf="registerForm.get('password').hasError('minlength')"
+      class="invalid-feedback">Password must be at least 4 characters</div>
+    <div *ngIf="registerForm.get('password').hasError('maxlength')"
+      class="invalid-feedback">Password must be at most 8 characters</div>
+  </div>
+
+  <div class="form-group">
+    <input
+      [class.is-invalid]='registerForm.get("confirmPassword").errors
+        && registerForm.get("confirmPassword").touched'
+      type="password"
+      class="form-control"
+      formControlName="confirmPassword"
+      placeholder="Confirm Password" >
+    <div *ngIf="registerForm.get('confirmPassword').hasError('required')"
+      class="invalid-feedback">Please enter a confirm password</div>
+    <div *ngIf="registerForm.get('confirmPassword').hasError('isMatching')"
+      class="invalid-feedback">Confirm password must match password</div>
   </div>
 
   <div class="form-group text-center col-12 d-flex my-2">
@@ -15,3 +49,6 @@
     <button class="btn btn-default mr-2 col-6" type="button" (click)="cancel()">Cancel</button>
   </div>
 </form>
+
+<p>Form Values : {{registerForm.value | json}}</p>
+<p>Form Values : {{registerForm.status | json}}</p>
