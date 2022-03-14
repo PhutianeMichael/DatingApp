@@ -11,7 +11,8 @@ import { AccountService } from '../_services/account.service';
 export class RegisterComponent implements OnInit {
 
   model:any = {};
-  registerForm: FormGroup
+  registerForm: FormGroup;
+  maxDate:Date;
   @Output() cancelRegister = new EventEmitter();
 
   constructor(private accountService: AccountService,
@@ -20,6 +21,8 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
+    this.maxDate = new Date();
+    this.maxDate.setFullYear(this.maxDate.getFullYear() - 18); // allowing only 18 year olds and above
   }
 
   initializeForm(){
