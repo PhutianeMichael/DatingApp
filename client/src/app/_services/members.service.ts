@@ -2,10 +2,12 @@ import { UserParams } from './../_models/userParams';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, pipe } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Member } from '../_models/member';
 import { PaginatedResult } from '../_models/Pagination';
+import { AccountService } from './account.service';
+import { User } from '../_models/user';
 
 
 @Injectable({
@@ -16,9 +18,28 @@ export class MembersService {
   baseUrl = environment.apiUrl;
   members: Member[] = [];
   memberCache = new Map();
+  user:User;
+  userParams: UserParams;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private accountService: AccountService) {
+    this.accountService.currentUser$.pipe(take(1)).subscribe(user => {
+      this.user = user;
+      this.userParams = new UserParams(user);
+    })
+   }
 
+   getUserParams(){
+     return this.userParams;
+   }
+
+   setUserParams(params: UserParams){
+    this.userParams = params;
+   }
+
+   resetUserParams(){
+     this.userParams = new UserParams(this.user);
+     return this.userParams;
+   }
 
   getMembers(userParams: UserParams){
     var response = this.memberCache.get(Object.values(userParams).join('-'));
