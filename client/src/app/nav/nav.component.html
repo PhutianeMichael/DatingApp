@@ -7,7 +7,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto" >
+        <ul class="navbar-nav mr-auto">
           <ng-container *ngIf="accountService.currentUser$ | async">
             <li class="nav-item">
               <a class="nav-link" routerLinkActive="active" routerLink="/members">Matches</a>
@@ -26,7 +26,8 @@
         </ul>
 
         <div class="dropdown" dropdown *ngIf="(accountService.currentUser$ | async) as user">
-          <a class="dropdown-toggle text-light" dropdownToggle>Welcome {{user.username|titlecase}}</a>
+          <img src="{{user.photoUrl}}" alt="{{user.username}}">
+          <a class="dropdown-toggle text-light ml-2" dropdownToggle>Welcome {{user.username|titlecase}}</a>
           <div class="dropdown-menu mt-3" *dropdownMenu="">
             <a routerLink="/member/edit" class="dropdown-item">Edit Profile</a>
             <div class="dropdown-divider"></div>
