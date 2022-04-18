@@ -1,4 +1,4 @@
-import { Pagination } from './../../_models/Pagination';
+import { Pagination } from '../../_models/pagination';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Member } from 'src/app/_models/member';
